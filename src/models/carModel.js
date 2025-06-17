@@ -8,5 +8,7 @@ export class Car {
         this.year = year;
         this.color = color;
         this.price = price;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 }
