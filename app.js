@@ -1,10 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
 import carRoutes from './src/routes/carRoute.js';
+import { requestLogger } from './src/middlewares/requestLogger.js';
 
 const app = express()
 const port = process.env.PORT
 
+app.use(requestLogger);
 app.use(express.json())
 
 app.get('/', (req, res) => {
