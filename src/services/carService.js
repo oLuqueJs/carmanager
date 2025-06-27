@@ -1,4 +1,5 @@
 import { Car } from "../models/carModel.js";
+import { CreateCarDto } from "../dtos/createCar.dto.js";
 
 const carList = []
 
@@ -7,17 +8,15 @@ const getAllCars = () => {
 }
 
 const createCar = (data) => {
-  const { brand, model, year, color, price } = data;
+  const car = CreateCarDto(data);
   
-  if ( !brand || !model || !year || !color || !price ) return null;
-  
-  const newCar = new Car({
-    brand,
-    model,
-    year,
-    color,
-    price
-  });
+  const newCar = new Car(
+    car.brand,
+    car.model,
+    car.year,
+    car.color,
+    car.price
+  );
 
   carList.push(newCar)
 
@@ -33,14 +32,11 @@ const updateCar = (id, data) => {
   if (i == -1) return undefined;
 
   const car = carList[i];
+
   carList[i] = {
     ...car,
-    brand: data.brand !== undefined ? data.brand : car.brand,
-    model: data.model !== undefined ? data.model : car.model,
-    year: data.year !== undefined ? data.year : car.year,
-    color: data.color !== undefined ? data.color : car.color,
-    price: data.price !== undefined ? data.price : car.price,
-  }
+    ...data
+  };
 
   return carList[i];
 }

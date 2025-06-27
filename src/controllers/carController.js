@@ -11,11 +11,8 @@ const findAllCars = (req,res) => {
 
 const createCar = (req, res) => {
     const newCar = carService.createCar(req.body);
-    if (!newCar) {
-        return res.status(400).json({ "message": "body missing car properties" }).end()
-    }
 
-    res.status(201).json(newCar);
+    res.status(201).json(newCar);   
 };
 
 const findCarById = (req, res) => {
