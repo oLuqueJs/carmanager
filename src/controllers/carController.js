@@ -1,71 +1,44 @@
-import { Car } from "../models/carModel.js";
-
-const data = [] // ? Temp
+import carService from "../services/carService.js";
 
 const findAllCars = (req,res) => {
+    const data = carService.getAllCars();
     if (data.length == 0) {
-        return res.status(404).json({ "message": "data is empty" })
+        return res.status(404).json({ "message": "data is empty" }).end()
     }
 
-    res.json(data)
+    res.status(200).json(data);
 };
 
 const createCar = (req, res) => {
-    const { brand, model, year, color, price } = req.body;
+    const newCar = carService.createCar(req.body);
 
-    const car = new Car(
-        brand,
-        model,
-        year,
-        color,
-        price,
-    );
-
-    data.push(car);
-    res.status(201).json(car);
+    res.status(201).json(newCar);   
 };
 
 const findCarById = (req, res) => {
-    const car = data.find(obj => obj.id === req.params.id)
-
+    const car = carService.findCarById(req.params.id);
     if (!car) {
-        return res.status(404).json({ "message": "Car not found" })
+        return res.status(404).json({ "message": "Car not found" }).end()
     }
 
     res.json(car);
 };
 
 const updateCar = (req, res) => {
-    const index = data.findIndex(obj => obj.id === req.params.id)
-
-    if (index == -1) {
-        return res.status(404).json({ "message": "Car not found" })
+    const updatedCar = carService.updateCar(req.params.id, req.body);
+    if (!updatedCar) {
+        return res.status(404).json({ "message": "Car not found" }).end()
     }
 
-    const car = data[index];
-    const { model, brand, year, color, price} = req.body;
-
-    data[index] = {
-        ...car,
-        model: model !== undefined ? model : car.model,
-        brand: brand !== undefined ? brand : car.brand,
-        year: year !== undefined ? year : car.year,
-        color: color !== undefined ? color : car.color,
-        price: price !== undefined ? price : car.price,
-        updatedAt: new Date()
-    };
-
-    res.json(data[index])
+    res.json(updatedCar)
 };
 
 const deleteCar = (req, res) => {
-    const index = data.findIndex(obj => obj.id === req.params.id)
-
-    if (index == -1) {
-        return res.status(404).json({ "message": "Car not found" })
+    const isDeleted = carService.deleteCar(req.params.id)
+    if (!isDeleted) {
+        return res.status(404).json({ "message": "Car not found" }).end()
     }
-
-    data.splice(index, 1);
+    
     res.status(204).end()
 };
 
