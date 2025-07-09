@@ -1,14 +1,13 @@
-import { v4 as uuidv4 } from 'uuid';
+import mongoose, { mongo } from "mongoose";
 
-export class Car {
-    constructor(brand, model, year, color, price){
-        this.id = uuidv4();
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.color = color;
-        this.price = price;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-}
+const carSchema = new mongoose.Schema({
+    brand: { type: String, required: true },
+    model: { type: String, required: true },
+    year: { type: Number, required: true },
+    color: { type: String, required: true },
+    price: { type: Number, required: true },
+}, {
+    timestamps: true
+});
+
+export const Car = mongoose.model('Car', carSchema);

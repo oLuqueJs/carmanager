@@ -1,7 +1,7 @@
 import carService from "../services/carService.js";
 
-const findAllCars = (req,res) => {
-    const data = carService.getAllCars();
+const findAllCars = async (req,res) => {
+    const data = await carService.getAllCars();
     if (data.length == 0) {
         return res.status(404).json({ "message": "data is empty" }).end()
     }
@@ -9,14 +9,14 @@ const findAllCars = (req,res) => {
     res.status(200).json(data);
 };
 
-const createCar = (req, res) => {
-    const newCar = carService.createCar(req.body);
+const createCar = async (req, res) => {
+    const newCar = await carService.createCar(req.body);
 
     res.status(201).json(newCar);   
 };
 
-const findCarById = (req, res) => {
-    const car = carService.findCarById(req.params.id);
+const findCarById = async (req, res) => {
+    const car = await carService.findCarById(req.params.id);
     if (!car) {
         return res.status(404).json({ "message": "Car not found" }).end()
     }
@@ -24,8 +24,8 @@ const findCarById = (req, res) => {
     res.json(car);
 };
 
-const updateCar = (req, res) => {
-    const updatedCar = carService.updateCar(req.params.id, req.body);
+const updateCar = async (req, res) => {
+    const updatedCar = await carService.updateCar(req.params.id, req.body);
     if (!updatedCar) {
         return res.status(404).json({ "message": "Car not found" }).end()
     }
@@ -33,8 +33,8 @@ const updateCar = (req, res) => {
     res.json(updatedCar)
 };
 
-const deleteCar = (req, res) => {
-    const isDeleted = carService.deleteCar(req.params.id)
+const deleteCar = async (req, res) => {
+    const isDeleted = await carService.deleteCar(req.params.id)
     if (!isDeleted) {
         return res.status(404).json({ "message": "Car not found" }).end()
     }
