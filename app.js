@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import carRoutes from './src/routes/carRoute.js';
 import { requestLogger } from './src/middlewares/requestLogger.js';
+import { connectDatabase } from './src/config/mongoose.js';
 
 const app = express()
 const port = process.env.PORT
@@ -15,6 +16,9 @@ app.get('/', (req, res) => {
 
 app.use('/cars', carRoutes)
 
-app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`)
+connectDatabase(process.env.DATABASE_URL).then(() => {
+  app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+  })
 })
+
