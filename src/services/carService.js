@@ -1,52 +1,27 @@
 import { Car } from "../models/carModel.js";
 import { CreateCarDto } from "../dtos/createCar.dto.js";
 
-const carList = []
 
-const getAllCars = () => {
-  return carList;
+const getAllCars = async () => {
+  return await Car.find();
 }
 
-const createCar = (data) => {
-  const car = CreateCarDto(data);
-  
-  const newCar = new Car(
-    car.brand,
-    car.model,
-    car.year,
-    car.color,
-    car.price
-  );
-
-  carList.push(newCar)
-
-  return newCar;
+const createCar = async (data) => {
+    const newCar = new Car(data);
+    const response = await newCar.save();
+    return response
 }
 
-const findCarById = (id) => {
-   return carList.find(o => o.id === id)
+const findCarById = async (id) => {
+  return await Car.findById(id);
 }
 
-const updateCar = (id, data) => {
-  const i = carList.findIndex(o => o.id == id);
-  if (i == -1) return undefined;
-
-  const car = carList[i];
-
-  carList[i] = {
-    ...car,
-    ...data
-  };
-
-  return carList[i];
+const updateCar = async (id, data) => {
+  return await Car.findByIdAndUpdate(id, data, { new: true });
 }
 
-const deleteCar = (id) => {
-  const i = carList.findIndex(o => o.id == id);
-  if (i == -1) return false;
-  
-  carList.splice(i, 1);
-  return true;
+const deleteCar = async (id) => {
+  return await Car.findByIdAndDelete(id);
 }
 
 export default {  
